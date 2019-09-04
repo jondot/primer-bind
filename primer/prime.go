@@ -68,12 +68,12 @@ func Process(name string, iters int, size int, workers int, mode int, iterdone O
 	bg := primitive.MakeColor(primitive.AverageImageColor(input))
 	fmt.Printf("Input: ok")
 
-	model := primitive.NewModel(input, bg, OutputSize)
+	model := primitive.NewModel(input, bg, OutputSize, workers)
 	fmt.Printf("iteration %d, time %.3f, score %.6f\n", 0, 0.0, model.Score)
 	start := time.Now()
 	for i := 1; i <= Number; i++ {
 		// find optimal shape and add it to the model
-		model.Step(primitive.ShapeType(mode), Alpha, workers)
+		model.Step(primitive.ShapeType(mode), Alpha, 1)
 		elapsed := time.Since(start).Seconds()
 		fmt.Printf("iteration %d, time %.3f, score %.6f\n", i, elapsed, model.Score)
 		iterdone.Do(i)
